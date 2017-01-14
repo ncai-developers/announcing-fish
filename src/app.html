@@ -1,0 +1,16 @@
+<template>
+  <require from="./resources/elements/navigation/navigation.html"></require>
+  <require from="./app.css"></require>
+  <div id="wrapper">
+
+    <navigation logout.bind="logout" router.bind="router"></navigation>
+
+    <div id="page-wrapper">
+
+      <router-view></router-view>
+
+    </div>
+    <!-- /#page-wrapper -->
+  </div>
+  <!-- /#wrapper -->
+</template>
