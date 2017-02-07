@@ -1,54 +1,102 @@
-import {Router} from 'aurelia-router';
-import {inject} from 'aurelia-dependency-injection';
-import { Login } from './resources/elements/login/login';
+import * as firebase from 'firebase';
+import { Router, Redirect } from 'aurelia-router';
+import { inject } from 'aurelia-dependency-injection';
 
-@inject(Router, Login)
+@inject(Router)
 export class App {
-  constructor(router, login) {
-    this.logout = ()=>{ login.logout() };
-    this.router = router;
-    this.router.configure(config => {
-      config.title = 'Announcing Fish Admin';
-      config.map([
-        {
-          route: '',
-          redirect: 'home'
-        }, {
-          route: 'home',
-          name: 'home',
-          moduleId: 'resources/elements/home/home',
-          nav: true, title: 'Home',
-          settings: {
-            classes: 'fa-dashboard'
-          }
-        }, {
-          route: 'upload',
-          moduleId: 'resources/elements/upload/upload',
-          nav: true, title: 'Upload Announcements',
-          settings: {
-            classes: 'fa-edit'
-          }
-        }
-      ]);
-    });
-    console.log(this.logout);
-    $('#side-menu').metisMenu();
-    $(window).bind('load resize', function() {
-      let topOffset = 50;
-      let width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
-      if (width < 768) {
-        $('div.navbar-collapse').addClass('collapse');
-        topOffset = 100; // 2-row-menu
-      } else {
-        $('div.navbar-collapse').removeClass('collapse');
+  configureRouter(config, router) {
+    let commonSettings = {
+      nav: true,
+      settings: {
+        auth: true
       }
+    };
+    config.title = 'Aurelia';
+    config.addAuthorizeStep(new AuthorizeStep);
+    config.map([
+      {
+        route: '',
+        redirect: 'welcome'
+      },{
+        route: 'welcome',
+        name: 'welcome',
+        moduleId: 'elements/welcome',
+        title: 'Welcome',
+        ...commonSettings
+      },{
+        route: 'create',
+        name: 'create',
+        moduleId: 'elements/create',
+        title: 'Create',
+        ...commonSettings
+      },{
+        route: 'login',
+        name: 'login',
+        moduleId: 'elements/login',
+        title: 'Login'
+      },{
+        route: 'upload',
+        name: 'upload',
+        moduleId: 'elements/upload',
+        title: 'upload',
+        ...commonSettings
+      },{
+        route: 'users',
+        name: 'users',
+        moduleId: 'elements/users',
+        title: 'Github Users',
+        ...commonSettings
+      },{
+        route: 'child-router',
+        name: 'child-router',
+        moduleId: 'elements/child-router',
+        title: 'Child Router',
+        ...commonSettings
+      }
+    ]);
+  }
 
-      let height = ((this.window.innerHeight > 0) ? this.window.innerHeight : this.screen.height) - 1;
-      height = height - topOffset;
-      if (height < 1) height = 1;
-      if (height > topOffset) {
-        $('#page-wrapper').css('min-height', (height) + 'px');
+  constructor(router){
+    this.router = router;
+
+    // Initialize Firebase
+    firebase.initializeApp({
+      apiKey: "AIzaSyAxk6A0H-es83mp70sW5Q08RqV0arF8y4Q",
+      authDomain: "announcing-fish.firebaseapp.com",
+      databaseURL: "https://announcing-fish.firebaseio.com",
+      storageBucket: "announcing-fish.appspot.com",
+      messagingSenderId: "575315045808"
+    });
+
+    firebase.auth().onAuthStateChanged( user => {
+      if (user) {
+        this.router.navigate('welcome');
+      } else {
+        // No user is signed in.
+        this.router.navigate('login');
       }
     });
+  }
+
+  logout(){
+    // Self-explanatory signout code
+    firebase.auth().signOut().then(() => {
+      console.log('logout');
+    }).catch(console.error);
+  }
+}
+
+class AuthorizeStep {
+  run(navigationInstruction, next) {
+
+    if (navigationInstruction.getAllInstructions().some(i => i.config.settings.auth) ) {
+
+        console.log('route');
+      if (!firebase.auth().currentUser) {
+        return next.cancel(new Redirect('login'));
+      }
+    }
+
+    return next();
   }
 }

@@ -1,16 +1,16 @@
 <template>
-  <require from="./resources/elements/navigation/navigation.html"></require>
-  <require from="./app.css"></require>
+  <require from="elements/nav-bar.html"></require>
+  <require from="bootstrap/css/bootstrap.css"></require>
+
   <div id="wrapper">
+    <nav-bar
+      logout.bind="logout"
+      router.bind="router"
+      if.bind="router.currentInstruction.config.nav"
+    ></nav-bar>
 
-    <navigation logout.bind="logout" router.bind="router"></navigation>
-
-    <div id="page-wrapper">
-
-      <router-view></router-view>
-
+    <div id="${(router.currentInstruction.config.name !== 'login')? 'page-content-wrapper':''}" class="page-host">
+      <router-view ></router-view>
     </div>
-    <!-- /#page-wrapper -->
   </div>
-  <!-- /#wrapper -->
 </template>
