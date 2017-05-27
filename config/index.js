@@ -18,7 +18,7 @@ module.exports = {
 
   build: {
     env: require('./prod.env'),
-    index: path.resolve(__dirname, '../dist/index.html'),
+    index: path.resolve(__dirname, '../docs/index.html'),
     publicPath: '',
     productionSourceMap: false,
 
@@ -32,7 +32,7 @@ module.exports = {
     // auto open browser or not
     openBrowser: true,
     publicPath: '/',
-    port: 8080,
+    port: 9090,
 
     // If for example you are using Quasar Play
     // to generate a QR code then on each dev (re)compilation

@@ -6,18 +6,18 @@
         <i>menu</i>
       </button>
       -->
-      <q-toolbar-title :padding="1">
+      <!--<q-toolbar-title :padding="1">
         Title
-      </q-toolbar-title>
+      </q-toolbar-title>-->
     </div>
 
-    <!-- Navigation Tabs
+     Navigation Tabs
     <q-tabs slot="navigation">
       <q-tab icon="mail" route="/layout" exact replace>Mails</q-tab>
       <q-tab icon="alarm" route="/layout/alarm" exact replace>Alarms</q-tab>
       <q-tab icon="help" route="/layout/help" exact replace>Help</q-tab>
     </q-tabs>
-    -->
+
 
     <!-- Drawer
     <q-drawer ref="drawer">
@@ -45,10 +45,10 @@
 
 <script>
 export default {
-  data () {
-    return {}
+  data(){
+    return {};
   }
-}
+};
 </script>
 
 <style>
