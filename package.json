@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "start": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "lint": "eslint --ext .js,.ts,.vue src",
+    "lint": "eslint --ext .js,.ts,.vue .",
     "build": "node build/build.js"
   },
   "engines": {
