@@ -2,7 +2,7 @@
 
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
+  parser: 'typescript-eslint-parser',
   parserOptions: {
     sourceType: 'module'
   },
@@ -27,7 +27,7 @@ module.exports = {
     // don't require .vue extension when importing
     'import/extensions': ['error', 'always', {
       js: 'never',
-      vue: 'never'
+      ts: 'never'
     }],
     // allow optionalDependencies
     'import/no-extraneous-dependencies': ['error', {
